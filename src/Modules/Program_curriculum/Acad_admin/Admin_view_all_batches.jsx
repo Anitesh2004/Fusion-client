@@ -16,6 +16,7 @@ function AdminViewAllBatches() {
   const [batches, setBatches] = useState([]);
   const [finishedBatches, setFinishedBatches] = useState([]);
   const [filteredBatches, setFilteredBatches] = useState([]);
+  console.log(filteredBatches);
 
   // Fetch data from the backend
   useEffect(() => {
@@ -31,9 +32,11 @@ function AdminViewAllBatches() {
             },
           },
         ); // Replace with actual endpoint
+        console.log(response.data);
         setBatches(response.data.batches); // Assuming API returns {runningBatches, finishedBatches}
         setFinishedBatches(response.data.finished_batches);
         setFilteredBatches(response.data.filter);
+        console.log(batches);
       } catch (error) {
         console.error("Error fetching batch data:", error);
       }
@@ -41,6 +44,8 @@ function AdminViewAllBatches() {
 
     fetchBatches();
   }, []);
+
+  console.log(batches);
   // console.log(batches)
   // Handle search input change
   const handleInputChange = (e) => {
@@ -63,6 +68,7 @@ function AdminViewAllBatches() {
       );
     });
     setFilteredBatches(filtered);
+    console.log(filtered);
   };
   // console.log(filteredBatches)
   // console.log(finishedBatches)
@@ -131,9 +137,8 @@ function AdminViewAllBatches() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(filteredBatches) &&
-                    filteredBatches.length > 0 ? (
-                      filteredBatches.map((batch, index) => (
+                    {Array.isArray(batches) && batches.length > 0 ? (
+                      batches.map((batch, index) => (
                         <tr
                           key={index}
                           className="courses-table-row"
@@ -157,7 +162,7 @@ function AdminViewAllBatches() {
                           </td>
                           <td>
                             <a
-                              href={`/programme_curriculum/admin_edit_batch_form?batch=${batch.name}`}
+                              href={`/programme_curriculum/admin_edit_batch_form?batch=${batch.batch_id}`}
                               className="course-link"
                               style={{ textDecoration: "none" }}
                             >
@@ -165,7 +170,6 @@ function AdminViewAllBatches() {
                                 Edit
                               </Button>
                             </a>
-                            /
                           </td>
                         </tr>
                       ))
@@ -218,7 +222,7 @@ function AdminViewAllBatches() {
                         </td>
                         <td>
                           <a
-                            href={`/programme_curriculum/admin_edit_batch_form?batch=${batch.name}`}
+                            href={`/programme_curriculum/admin_edit_batch_form?batch=${batch.batch_id}`}
                             className="course-link"
                             style={{ textDecoration: "none" }}
                           >
